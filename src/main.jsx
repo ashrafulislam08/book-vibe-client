@@ -5,6 +5,7 @@ import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import AddBook from "./pages/AddBook.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 
 const router = createBrowserRouter([
   {
@@ -14,10 +15,16 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+        loader: () => fetch("http://localhost:4000/book"),
       },
       {
         path: "/addBook",
         element: <AddBook />,
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+        loader: () => fetch("http://localhost:4000/book"),
       },
     ],
   },

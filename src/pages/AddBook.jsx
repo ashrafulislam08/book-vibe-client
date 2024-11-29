@@ -1,68 +1,122 @@
 import React from "react";
+import Swal from "sweetalert2";
 
 const AddBook = () => {
+  const handleAddBook = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const bookName = form.book.value;
+    const author = form.author.value;
+    const publisher = form.publisher.value;
+    const publishedYear = form.publishedYear.value;
+    const bookDetails = form.details.value;
+    const photo = form.photo.value;
+    const book = {
+      bookName,
+      author,
+      publisher,
+      publishedYear,
+      bookDetails,
+      photo,
+    };
+    console.log(book);
+
+    // send book to server
+    fetch("http://localhost:4000/book", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(book),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.acknowledged) {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Successfully Added a Book",
+          });
+          form.reset();
+        }
+      });
+  };
   return (
     <div>
-      <form class="card-body lg:grid grid-cols-2">
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Book Name</span>
+      <form onSubmit={handleAddBook} className="card-body lg:grid grid-cols-2">
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Book Name</span>
           </label>
           <input
             type="text"
             placeholder="Book Name"
-            class="input input-bordered"
+            className="input input-bordered"
             name="book"
             required
           />
         </div>
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Author</span>
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Author</span>
           </label>
           <input
             type="text"
             placeholder="Author"
             name="author"
-            class="input input-bordered"
+            className="input input-bordered"
             required
           />
         </div>
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Book Publisher</span>
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Book Publisher</span>
           </label>
           <input
             type="text"
             placeholder="Publisher"
             name="publisher"
-            class="input input-bordered"
+            className="input input-bordered"
             required
           />
         </div>
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Year of Publishing</span>
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Year of Publishing</span>
           </label>
           <input
             type="text"
             placeholder="Published year"
-            name="publisherYear"
-            class="input input-bordered"
+            name="publishedYear"
+            className="input input-bordered"
             required
           />
         </div>
-        <div class="form-control w-full col-span-2">
-          <label class="label">
-            <span class="label-text">Book Details</span>
+        <div className="form-control w-full col-span-2">
+          <label className="label">
+            <span className="label-text">Photo URL</span>
+          </label>
+          <input
+            type="text"
+            placeholder="Photo URL"
+            name="photo"
+            className="input input-bordered"
+            required
+          />
+        </div>
+        <div className="form-control w-full col-span-2">
+          <label className="label">
+            <span className="label-text">Book Details</span>
           </label>
           <textarea
             placeholder="Book Details"
             className="textarea textarea-bordered textarea-lg lg:w-full"
+            name="details"
           ></textarea>
         </div>
-        <div class="form-control mt-6 col-span-2">
-          <button class="btn btn-primary">Add Book</button>
+        <div className="form-control mt-6 col-span-2">
+          <button className="btn btn-primary">Add Book</button>
         </div>
       </form>
     </div>
